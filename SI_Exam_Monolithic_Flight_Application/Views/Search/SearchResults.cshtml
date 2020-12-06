@@ -1,0 +1,14 @@
+﻿@using System.Collections.ObjectModel
+
+@{
+    ViewData["Title"] = "SearchResults";
+    var flights = TempData["Flights"];
+
+    }
+
+    <h1>SearchResults</h1>
+    @Html.ValidationSummary()
+@flights
+
+
+
