@@ -21,7 +21,7 @@ namespace SI_Exam_Monolithic_Flight_Application.Controllers
 
         FlightFacade facade = new FlightFacade(DAO);
 
-        [Route("search-flight/{departureAirport}/{arrivalAirport}/{departureDate}/{returnDate}/", Name="SearchFlight")]
+        [Route("search-flight/{departureAirport}-{arrivalAirport}/{departureDate}/{returnDate}/", Name="SearchFlight")]
         public ActionResult SearchFlight(string departureAirport, string arrivalAirport, string departureDate, string returnDate)
         {
             // Save values for graphical uses only. As this is a proof of concept we just want to show a lists of flights regardless of the date.

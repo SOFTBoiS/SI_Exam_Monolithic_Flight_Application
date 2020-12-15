@@ -48,7 +48,7 @@
         button.onclick = e => {
             e.preventDefault();
             console.log(formData);
-           window.location.href = `/search-flight/${formData.departureAirport}/${formData.arrivalAirport}/${formData.departureDate}/${formData.returnDate}/`;
+           window.location.href = `/search-flight/${formData.departureAirport}-${formData.arrivalAirport}/${formData.departureDate}/${formData.returnDate}/`;
         }
 
 
