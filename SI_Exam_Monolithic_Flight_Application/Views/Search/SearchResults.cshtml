@@ -1,5 +1,6 @@
 ﻿@using System.Collections.ObjectModel
 @using System.Diagnostics
+@using Microsoft.AspNetCore.Http
 
 @{
     ViewData["Title"] = "SearchResults";
@@ -21,12 +22,17 @@
                 <span>@flightsObjects[i].departureAirport - @flightsObjects[i].arrivalAirport</span>
                 <span>@flightsObjects[i].time</span>
             </div>
-            <button id="flight-@i">Book</button>
+            <form name="book" action="/Booking/Flight" method="POST">
+                <input type="hidden" value="@flightsObjects[i].id" name="id" />
+                <button id="flight-@i">Book</button>
+            </form>
         </div>
     }
 </div>
 </div>
 @Html.ValidationSummary()
+
+
 
 <style>
     #results {
@@ -53,21 +59,4 @@
 </style>
 
     
-<script>
-    var formData = {};
-      
-
-    var form = document.getElementById("myForm");
-
-
-    var button = document.getElementById("submitFlightSearch");
-    button.onclick = e => {
-        let id = e.id;
-        e.preventDefault();
-        console.log(formData);
-        window.location.href = `/search-flight/${formData.departureAirport}-${formData.arrivalAirport}/${formData.departureDate}/${formData.returnDate}/`;
-    }
-
-
-</script>
 

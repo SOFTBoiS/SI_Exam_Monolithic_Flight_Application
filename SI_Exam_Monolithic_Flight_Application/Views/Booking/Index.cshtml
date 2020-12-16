@@ -1,5 +1,26 @@
-﻿@*
+﻿@using System.Diagnostics
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    var id = HttpContextAccessor.HttpContext.Session.GetInt32("flightId");
+    Debug.WriteLine(id);
+    Debug.WriteLine(id);
+    Debug.WriteLine(id);
 }
+
+<div>
+    <div>
+        <span>Do you wish to rent a car as well with your flight?</span>
+    </div>
+    <div>
+        <form id="yes-form" action="/Booking/Cars" method="GET">
+            <button>Yes</button>
+        </form>
+        <form id="yes-form" action="/Booking/Confirm" method="GET">
+            <button>No</button>
+        </form>
+    </div>
+</div>

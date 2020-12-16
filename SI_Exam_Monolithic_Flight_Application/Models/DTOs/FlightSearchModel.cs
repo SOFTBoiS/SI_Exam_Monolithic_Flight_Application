@@ -9,7 +9,7 @@ namespace SI_Exam_Monolithic_Flight_Application.Models
 {
     public class FlightSearchModel
     {
-        public long id { get; }
+        public int id { get; }
         [Required]
         [DisplayName("Departure Airport")]
         public string departureAirport { get;  }
@@ -27,7 +27,7 @@ namespace SI_Exam_Monolithic_Flight_Application.Models
         public string image { get;  }
         public string time { get;  }
 
-        public FlightSearchModel(long id, string departureAirport, string arrivalAirport, string image, string time)
+        public FlightSearchModel(int id, string departureAirport, string arrivalAirport, string image, string time)
         {
             this.id = id;
             this.departureAirport = departureAirport;

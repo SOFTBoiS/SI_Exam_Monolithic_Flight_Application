@@ -32,15 +32,8 @@ namespace SI_Exam_Monolithic_Flight_Application.Controllers
 
             //Contact DB
             var results = facade.SearchForFlight(departureAirport, arrivalAirport);
-            var response = JsonConvert.SerializeObject(results);
-            XmlSerializer serializer = new XmlSerializer(results.GetType());
-            
-            using (var myWriter = new StringWriter())
-            {
-                new XmlSerializer(results.GetType()).Serialize(myWriter, results);
-                TempData["Flights"] = myWriter.ToString();
-            }
 
+            // Save result data to retrieve it in the View
             TempData["FlightObjects"] = results;
 
             

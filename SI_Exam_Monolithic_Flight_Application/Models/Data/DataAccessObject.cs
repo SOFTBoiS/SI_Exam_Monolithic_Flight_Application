@@ -39,13 +39,12 @@ namespace SI_Exam_Monolithic_Flight_Application.Models.Data
                         "SELECT * FROM dbo.Flight where departure_airport = @departure AND arrival_airport = @arrival", conn);
                     query.Parameters.AddWithValue("@departure", departureAirport);
                     query.Parameters.AddWithValue("@arrival", arrivalAirport);
-                    Debug.Write(_connString);
                     var result = query.ExecuteReader();
                     if (result.HasRows)
                     {
                         while (result.Read())
                         {
-                            var id = result.GetInt64(result.GetOrdinal("id"));
+                            var id = result.GetInt32(result.GetOrdinal("id"));
                             var depAirport = result.GetString(result.GetOrdinal("departure_airport"));
                             var arrAirport = result.GetString(result.GetOrdinal("arrival_airport"));
                             var image = result.GetString(result.GetOrdinal("image"));

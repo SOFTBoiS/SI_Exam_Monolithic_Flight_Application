@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace SI_Exam_Monolithic_Flight_Application
 {
@@ -28,6 +29,7 @@ namespace SI_Exam_Monolithic_Flight_Application
             services.AddSession(options =>
             {
             });
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
