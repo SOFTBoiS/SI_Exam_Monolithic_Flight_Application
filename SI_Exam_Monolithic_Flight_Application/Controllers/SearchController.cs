@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 using Newtonsoft.Json;
 using SI_Exam_Monolithic_Flight_Application.Facade;
 using SI_Exam_Monolithic_Flight_Application.Models;
@@ -31,25 +33,17 @@ namespace SI_Exam_Monolithic_Flight_Application.Controllers
             //Contact DB
             var results = facade.SearchForFlight(departureAirport, arrivalAirport);
             var response = JsonConvert.SerializeObject(results);
+            XmlSerializer serializer = new XmlSerializer(results.GetType());
+            
+            using (var myWriter = new StringWriter())
+            {
+                new XmlSerializer(results.GetType()).Serialize(myWriter, results);
+                TempData["Flights"] = myWriter.ToString();
+            }
 
+            TempData["FlightObjects"] = results;
 
-
-            // If error
-            //TempData["ErrorMessage"] = "TEST ERROR REE";
-            //return RedirectToAction("Index", "Home");
-
-
-            //return new FlightSearchModel[]
-            //{
-            //    new FlightSearchModel()
-            //    {
-            //        arrivalAirport = "CPH",
-            //        departureAirport = "LAX",
-            //        departureDate = new DateTime(2020, 12, 12),
-            //        returnDate = new DateTime(2020, 12, 14)
-            //    }
-            //};
-            TempData["Flights"] = response;
+            
             return View("SearchResults");
         }
 

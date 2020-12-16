@@ -45,11 +45,12 @@ namespace SI_Exam_Monolithic_Flight_Application.Models.Data
                     {
                         while (result.Read())
                         {
+                            var id = result.GetInt64(result.GetOrdinal("id"));
                             var depAirport = result.GetString(result.GetOrdinal("departure_airport"));
                             var arrAirport = result.GetString(result.GetOrdinal("arrival_airport"));
                             var image = result.GetString(result.GetOrdinal("image"));
                             var time = result.GetString(result.GetOrdinal("time"));
-                            var flight = new FlightSearchModel(depAirport, arrAirport, image, time);
+                            var flight = new FlightSearchModel(id, depAirport, arrAirport, image, time);
                             flights.Add(flight);
                         }
                     }

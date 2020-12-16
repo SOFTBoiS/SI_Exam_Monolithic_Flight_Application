@@ -1,14 +1,73 @@
 ﻿@using System.Collections.ObjectModel
+@using System.Diagnostics
 
 @{
     ViewData["Title"] = "SearchResults";
     var flights = TempData["Flights"];
-
+    var flightsObjects = (Collection<FlightSearchModel>) TempData["FlightObjects"];
+    var departureDate = TempData["departureDate"];
+    var returnDate = TempData["returnDate"];
     }
 
-    <h1>SearchResults</h1>
-    @Html.ValidationSummary()
-@flights
+
+<h1>SearchResults</h1>
+<div id="results">
+<div id="flights">
+    @for (var i = 0; i < flightsObjects.Count; i++)
+    {
+        <div id="flight">
+            <div id="image" style="background-image: @flightsObjects[i].image" />
+            <div id="dates">
+                <span>@flightsObjects[i].departureAirport - @flightsObjects[i].arrivalAirport</span>
+                <span>@flightsObjects[i].time</span>
+            </div>
+            <button id="flight-@i">Book</button>
+        </div>
+    }
+</div>
+</div>
+@Html.ValidationSummary()
+
+<style>
+    #results {
+        width: 65vw;
+        background-color: aqua;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-content: center;
+    }
+    #flights {
+        display: flex;
+        flex-direction: column;
+        width: 150px;
+        flex-wrap: wrap;
+        background-color: tomato;
+        justify-content: center;
+        align-content: center;
+    }
+    #flight {
+        display: flex;
+        background-color: grey;
+    }
+</style>
+
+    
+<script>
+    var formData = {};
+      
+
+    var form = document.getElementById("myForm");
 
 
+    var button = document.getElementById("submitFlightSearch");
+    button.onclick = e => {
+        let id = e.id;
+        e.preventDefault();
+        console.log(formData);
+        window.location.href = `/search-flight/${formData.departureAirport}-${formData.arrivalAirport}/${formData.departureDate}/${formData.returnDate}/`;
+    }
+
+
+</script>
 
