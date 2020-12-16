@@ -14,8 +14,8 @@ namespace SI_Exam_Monolithic_Flight_Application.Controllers
     public class SearchController : Controller
     {
 
-        private static string _sqlServer = "LAPTOP-DDB3EQTP";
-        private static string _database = "si_exam";
+        private static string _sqlServer = Environment.GetEnvironmentVariable("SI_EXAM_SERVER");
+        private static string _database = Environment.GetEnvironmentVariable("SI_EXAM_DB_NAME");
         private static string _trustedConn = "true";
         private static DataAccessObject DAO = new DataAccessObject(_sqlServer, _database, _trustedConn);
 
