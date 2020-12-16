@@ -24,12 +24,19 @@ namespace SI_Exam_Monolithic_Flight_Application.Controllers
             return RedirectToAction("Index");
         }
 
-        //[HttpGet]
-        //public IActionResult Cars()
-        //{
+        [HttpGet]
+        public IActionResult Cars()
+        {
 
-        //    return View("../Cars");
-        //}
+            return RedirectToAction("Index", "Car");
+        }
+
+        [HttpPost]
+        public IActionResult Confirm()
+        {
+            //Todo: Confirm booking and save it in DB
+            return View("Confirmation");
+        }
 
     }
 
