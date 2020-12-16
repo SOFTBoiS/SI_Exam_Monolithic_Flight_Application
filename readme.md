@@ -2,8 +2,8 @@
 
 ## Requirements ⚠
 
-Visual Studio 2019
-Microsoft SQL Server 2019
+Visual Studio 2019  
+Microsoft SQL Server 2019  
 .NET 5.0
 
 ## Setup 🛠
