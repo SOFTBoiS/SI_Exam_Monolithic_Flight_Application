@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using SI_Exam_Monolithic_Flight_Application.Models.DTOs;
 
 namespace SI_Exam_Monolithic_Flight_Application.Models.Data
 {
@@ -79,11 +80,12 @@ namespace SI_Exam_Monolithic_Flight_Application.Models.Data
                 {
 
                     var query = new SqlCommand(
-                        "INSERT INTO dbo.Booking (user_id, flight_id, price) VALUES (@userId, @flightId, @price)",
+                        "INSERT INTO dbo.Booking (user_id, flight_id, price, status) VALUES (@userId, @flightId, @price, @status)",
                         conn);
                     query.Parameters.AddWithValue("@userId", userId);
                     query.Parameters.AddWithValue("@flightId", flightId);
                     query.Parameters.AddWithValue("@price", price);
+                    query.Parameters.AddWithValue("@status", FLIGHT_STATUS.RESERVED);
                     conn.Open();
                     var result = query.ExecuteNonQuery();
 
