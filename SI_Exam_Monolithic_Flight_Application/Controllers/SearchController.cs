@@ -32,6 +32,7 @@ namespace SI_Exam_Monolithic_Flight_Application.Controllers
 
             //Contact DB
             var results = facade.SearchForFlight(departureAirport, arrivalAirport);
+            // TODO: Throw and catch custome FlightsNotFound Exception
             if (results.Count < 1)
             {
                 TempData["ErrorMessage"] = "No flights found";
