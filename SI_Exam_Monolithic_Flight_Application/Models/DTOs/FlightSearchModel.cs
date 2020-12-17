@@ -39,5 +39,7 @@ namespace SI_Exam_Monolithic_Flight_Application.Models
         public FlightSearchModel()
         {
         }
+
+
     }
 }

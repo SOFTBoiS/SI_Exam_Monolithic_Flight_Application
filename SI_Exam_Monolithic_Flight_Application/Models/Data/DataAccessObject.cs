@@ -30,15 +30,19 @@ namespace SI_Exam_Monolithic_Flight_Application.Models.Data
 
         public Collection<FlightSearchModel> GetFlights(string departureAirport, string arrivalAirport)
         {
-            var flights = new Collection<FlightSearchModel>();
-            using (SqlConnection conn = new SqlConnection(_connString))
+            try
             {
-          
-                    conn.Open();
+
+                var flights = new Collection<FlightSearchModel>();
+                using (SqlConnection conn = new SqlConnection(_connString))
+                {
+
                     var query = new SqlCommand(
-                        "SELECT * FROM dbo.Flight where departure_airport = @departure AND arrival_airport = @arrival", conn);
+                        "SELECT * FROM dbo.Flight where departure_airport = @departure AND arrival_airport = @arrival",
+                        conn);
                     query.Parameters.AddWithValue("@departure", departureAirport);
                     query.Parameters.AddWithValue("@arrival", arrivalAirport);
+                    conn.Open();
                     var result = query.ExecuteReader();
                     if (result.HasRows)
                     {
@@ -54,10 +58,48 @@ namespace SI_Exam_Monolithic_Flight_Application.Models.Data
                         }
                     }
 
-      
+                }
+
+                return flights;
+            }
+            catch (Exception e)
+            {
+                Debug.Write(e);
+                throw new Exception("Something went wrong fetching flights. Please try again.");
             }
 
-            return flights;
         }
+
+        public bool BookFlight(int userId, int flightId, long price)
+        {
+            try
+            {
+
+                using (SqlConnection conn = new SqlConnection(_connString))
+                {
+
+                    var query = new SqlCommand(
+                        "INSERT INTO dbo.Booking (user_id, flight_id, price) VALUES (@userId, @flightId, @price)",
+                        conn);
+                    query.Parameters.AddWithValue("@userId", userId);
+                    query.Parameters.AddWithValue("@flightId", flightId);
+                    query.Parameters.AddWithValue("@price", price);
+                    conn.Open();
+                    var result = query.ExecuteNonQuery();
+
+
+
+
+                }
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                throw new Exception("Something went wrong with the booking. Please try again.");
+            }
+        }
+
     }
 }

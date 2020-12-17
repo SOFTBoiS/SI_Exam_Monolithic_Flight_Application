@@ -4,10 +4,7 @@
 @{
     ViewData["Title"] = "Home Page";
     var errMsg = TempData["ErrorMessage"];
-    var departureAirport = "";
-    var arrivalAirport = "";
-    DateTime departureDate = DateTime.Today;
-    DateTime returnDate = DateTime.Today;
+
 
 
 
@@ -20,12 +17,11 @@
 
     @Html.ValidationMessage("Error")
     <form id="myForm">
-        <input type="text" name="departureAirport" value="@Model?.departureAirport" />
-        <input type="text" name="arrivalAirport" value="@arrivalAirport" />
-        <input type="date" name="departureDate" value="@departureDate" />
-        <input type="date" name="returnDate" value="@returnDate" />
+        <input type="text" name="departureAirport" placeholder="Departure Airport"  />
+        <input type="text" name="arrivalAirport" placeholder="Destination Airport" />
+        <input type="date" name="departureDate" />
+        <input type="date" name="returnDate"  />
         <button type="button" id="submitFlightSearch">Search</button>
-
     </form>
 
     

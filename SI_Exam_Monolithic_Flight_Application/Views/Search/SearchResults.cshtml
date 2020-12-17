@@ -5,30 +5,35 @@
 @{
     ViewData["Title"] = "SearchResults";
     var flights = TempData["Flights"];
-    var flightsObjects = (Collection<FlightSearchModel>) TempData["FlightObjects"];
+    var flightsObjects = (Collection<FlightSearchModel>)TempData["FlightObjects"];
     var departureDate = TempData["departureDate"];
     var returnDate = TempData["returnDate"];
-    }
+}
 
 
 <h1>SearchResults</h1>
 <div id="results">
-<div id="flights">
-    @for (var i = 0; i < flightsObjects.Count; i++)
-    {
-        <div id="flight">
-            <div id="image" style="background-image: @flightsObjects[i].image" />
-            <div id="dates">
-                <span>@flightsObjects[i].departureAirport - @flightsObjects[i].arrivalAirport</span>
-                <span>@flightsObjects[i].time</span>
+    <div id="flights">
+        @for (var i = 0; i < flightsObjects.Count; i++)
+        {
+            <div id="flight">
+                <div id="image" style="background-image: @flightsObjects[i].image" />
+                <div id="dates">
+                    <span>@flightsObjects[i].departureAirport - @flightsObjects[i].arrivalAirport</span>
+                    <span>@departureDate - @flightsObjects[i].time</span>
+                    <span>
+                        @flightsObjects[i].arrivalAirport - @flightsObjects[i].departureAirport
+                    </span>
+                    <span>@returnDate - @flightsObjects[i].time</span>
+
+                </div>
+                <form name="book" action="/Booking/Flight" method="POST">
+                    <input type="hidden" value="@flightsObjects[i].id" name="id" />
+                    <button id="flight-@i">Book</button>
+                </form>
             </div>
-            <form name="book" action="/Booking/Flight" method="POST">
-                <input type="hidden" value="@flightsObjects[i].id" name="id" />
-                <button id="flight-@i">Book</button>
-            </form>
-        </div>
-    }
-</div>
+        }
+    </div>
 </div>
 @Html.ValidationSummary()
 
@@ -43,20 +48,22 @@
         justify-content: center;
         align-content: center;
     }
+
     #flights {
         display: flex;
         flex-direction: column;
-        width: 150px;
+        width: 200px;
         flex-wrap: wrap;
         background-color: tomato;
         justify-content: center;
         align-content: center;
     }
+
     #flight {
         display: flex;
         background-color: grey;
     }
 </style>
 
-    
+
 
