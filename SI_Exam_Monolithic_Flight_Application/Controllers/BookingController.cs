@@ -8,6 +8,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Microsoft.AspNetCore.Http;
+using SI_Exam_Monolithic_Flight_Application.Facade;
+using SI_Exam_Monolithic_Flight_Application.Models.Data;
 using SI_Exam_Monolithic_Flight_Application.Models.DTOs;
 using SI_Exam_Monolithic_Flight_Application.Utils;
 
@@ -15,7 +17,12 @@ namespace SI_Exam_Monolithic_Flight_Application.Controllers
 {
     public class BookingController : Controller
     {
+        private static string _sqlServer = Environment.GetEnvironmentVariable("SI_EXAM_SERVER");
+        private static string _database = Environment.GetEnvironmentVariable("SI_EXAM_DB_NAME");
+        private static string _trustedConn = "true";
+        private static DataAccessObject DAO = new DataAccessObject(_sqlServer, _database, _trustedConn);
 
+        FlightFacade facade = new FlightFacade(DAO);
         public IActionResult Index()
         {
             return View();
@@ -24,7 +31,10 @@ namespace SI_Exam_Monolithic_Flight_Application.Controllers
         [HttpPost]
         public IActionResult Flight(int id)
         {
+
             //Todo Create a flight booking
+            facade.BookFlight(1, 1, 100);
+
             HttpContext.Session.SetInt32("flightId", id);
             return RedirectToAction("Index");
         }
@@ -51,9 +61,6 @@ namespace SI_Exam_Monolithic_Flight_Application.Controllers
             {
                 //TODO: Book a car
                 var objTest = new CarBookingModel("etmongoidher", "adam", DateTime.Today, DateTime.Today, 10000);
-                Debug.WriteLine("===============");
-                Debug.WriteLine(objTest.ToString());
-                Debug.WriteLine("===============");
 
                 var res = XmlUtils.SerializeToString(objTest);
                 TempData["TestXML"] = res;

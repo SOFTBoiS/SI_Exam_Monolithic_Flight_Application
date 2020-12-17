@@ -71,27 +71,21 @@ namespace SI_Exam_Monolithic_Flight_Application.Models.Data
 
         }
 
-        public bool BookFlight(int userId, int flightId, long price)
+        public bool ReserveFlight(int userId, int flightId, long price)
         {
             try
             {
-
                 using (SqlConnection conn = new SqlConnection(_connString))
                 {
-
                     var query = new SqlCommand(
                         "INSERT INTO dbo.Booking (user_id, flight_id, price, status) VALUES (@userId, @flightId, @price, @status)",
                         conn);
                     query.Parameters.AddWithValue("@userId", userId);
                     query.Parameters.AddWithValue("@flightId", flightId);
                     query.Parameters.AddWithValue("@price", price);
-                    query.Parameters.AddWithValue("@status", FLIGHT_STATUS.RESERVED);
+                    query.Parameters.AddWithValue("@status", FLIGHT_STATUS.RESERVED.ToString());
                     conn.Open();
                     var result = query.ExecuteNonQuery();
-
-
-
-
                 }
 
                 return true;
