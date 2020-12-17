@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Microsoft.AspNetCore.Http;
 using SI_Exam_Monolithic_Flight_Application.Models.DTOs;
+using SI_Exam_Monolithic_Flight_Application.Utils;
 
 namespace SI_Exam_Monolithic_Flight_Application.Controllers
 {
@@ -54,17 +55,12 @@ namespace SI_Exam_Monolithic_Flight_Application.Controllers
                 Debug.WriteLine(objTest.ToString());
                 Debug.WriteLine("===============");
 
-                using (StringWriter writer = new StringWriter(CultureInfo.InvariantCulture))
-                {
-                    XmlSerializer serializer = new XmlSerializer(typeof (CarBookingModel));
-                    serializer.Serialize(writer, objTest);
-                    var res = writer.ToString();
-                    TempData["TestXML"] = res;
-                    Debug.WriteLine(res);
-                }
- 
-           
-                
+                var res = XmlUtils.SerializeToString(objTest);
+                TempData["TestXML"] = res;
+                Debug.WriteLine(res);
+
+
+
             }
 
             //Todo: Confirm booking and save it in DB
