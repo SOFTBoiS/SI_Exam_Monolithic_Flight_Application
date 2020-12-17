@@ -29,11 +29,11 @@ namespace SI_Exam_Monolithic_Flight_Application.Controllers
         }
 
         [HttpPost]
-        public IActionResult Flight(int id)
+        public IActionResult Flight(int id, long price, int passengers)
         {
 
             //Todo Create a flight booking
-            facade.BookFlight(1, 1, 100);
+            facade.BookFlight(1, id, price, passengers);
 
             HttpContext.Session.SetInt32("flightId", id);
             return RedirectToAction("Index");

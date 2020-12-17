@@ -8,6 +8,7 @@
     var flightsObjects = (Collection<FlightSearchModel>)TempData["FlightObjects"];
     var departureDate = TempData["departureDate"];
     var returnDate = TempData["returnDate"];
+    var passengers = TempData["Passengers"];
 }
 
 
@@ -29,6 +30,8 @@
                 </div>
                 <form name="book" action="/Booking/Flight" method="POST">
                     <input type="hidden" value="@flightsObjects[i].id" name="id" />
+                    <input type="hidden" value="@flightsObjects[i].price" name="price" />
+                    <input type="hidden" value="@passengers" name="passengers" />
                     <button id="flight-@i">Book</button>
                 </form>
             </div>

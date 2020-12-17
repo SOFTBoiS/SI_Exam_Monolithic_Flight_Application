@@ -27,13 +27,16 @@ namespace SI_Exam_Monolithic_Flight_Application.Models
         public string image { get;  }
         public string time { get;  }
 
-        public FlightSearchModel(int id, string departureAirport, string arrivalAirport, string image, string time)
+        public long price { get; }
+
+        public FlightSearchModel(int id, string departureAirport, string arrivalAirport, string image, string time, long price)
         {
             this.id = id;
             this.departureAirport = departureAirport;
             this.arrivalAirport = arrivalAirport;
             this.image = image;
             this.time = time;
+            this.price = price;
         }
 
         public FlightSearchModel()

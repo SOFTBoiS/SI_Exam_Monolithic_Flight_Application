@@ -54,7 +54,8 @@ namespace SI_Exam_Monolithic_Flight_Application.Models.Data
                             var arrAirport = result.GetString(result.GetOrdinal("arrival_airport"));
                             var image = result.GetString(result.GetOrdinal("image"));
                             var time = result.GetString(result.GetOrdinal("time"));
-                            var flight = new FlightSearchModel(id, depAirport, arrAirport, image, time);
+                            var price = result.GetInt64(result.GetOrdinal("price"));
+                            var flight = new FlightSearchModel(id, depAirport, arrAirport, image, time, price);
                             flights.Add(flight);
                         }
                     }
@@ -71,18 +72,19 @@ namespace SI_Exam_Monolithic_Flight_Application.Models.Data
 
         }
 
-        public bool ReserveFlight(int userId, int flightId, long price)
+        public bool ReserveFlight(int userId, int flightId, long price, int passengers)
         {
             try
             {
                 using (SqlConnection conn = new SqlConnection(_connString))
                 {
                     var query = new SqlCommand(
-                        "INSERT INTO dbo.Booking (user_id, flight_id, price, status) VALUES (@userId, @flightId, @price, @status)",
+                        "INSERT INTO dbo.Booking (user_id, flight_id, price, passengers, status) VALUES (@userId, @flightId, @price, @passengers, @status)",
                         conn);
                     query.Parameters.AddWithValue("@userId", userId);
                     query.Parameters.AddWithValue("@flightId", flightId);
                     query.Parameters.AddWithValue("@price", price);
+                    query.Parameters.AddWithValue("@passengers", passengers);
                     query.Parameters.AddWithValue("@status", FLIGHT_STATUS.RESERVED.ToString());
                     conn.Open();
                     var result = query.ExecuteNonQuery();

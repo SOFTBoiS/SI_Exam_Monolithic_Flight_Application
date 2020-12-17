@@ -24,9 +24,10 @@ namespace SI_Exam_Monolithic_Flight_Application.Facade
             return result;
         }
 
-        public bool BookFlight(int userId, int flightId, long price)
+        public bool BookFlight(int userId, int flightId, long price, int passengers)
         {
-            var succeeded = DAO.ReserveFlight(userId, flightId, price);
+            
+            var succeeded = DAO.ReserveFlight(userId, flightId, price, passengers);
             return succeeded;
         }
     }

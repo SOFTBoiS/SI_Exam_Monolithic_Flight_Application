@@ -23,8 +23,8 @@ namespace SI_Exam_Monolithic_Flight_Application.Controllers
 
         FlightFacade facade = new FlightFacade(DAO);
 
-        [Route("search-flight/{departureAirport}-{arrivalAirport}/{departureDate}/{returnDate}/", Name="SearchFlight")]
-        public ActionResult SearchFlight(string departureAirport, string arrivalAirport, string departureDate, string returnDate)
+        [Route("search-flight/{departureAirport}-{arrivalAirport}/{departureDate}/{returnDate}/{passengers}", Name="SearchFlight")]
+        public ActionResult SearchFlight(string departureAirport, string arrivalAirport, string departureDate, string returnDate, int passengers)
         {
             // Save values for graphical uses only. As this is a proof of concept we just want to show a lists of flights regardless of the date.
             TempData["departureDate"] = departureDate;
@@ -32,10 +32,14 @@ namespace SI_Exam_Monolithic_Flight_Application.Controllers
 
             //Contact DB
             var results = facade.SearchForFlight(departureAirport, arrivalAirport);
-
+            if (results.Count < 1)
+            {
+                TempData["ErrorMessage"] = "No flights found";
+                return RedirectToAction("Index", "Home");
+            }
             // Save result data to retrieve it in the View
             TempData["FlightObjects"] = results;
-
+            TempData["Passengers"] = passengers;
             
             return View("SearchResults");
         }
