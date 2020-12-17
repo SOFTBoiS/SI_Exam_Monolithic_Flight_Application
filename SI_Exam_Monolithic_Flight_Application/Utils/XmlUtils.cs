@@ -11,9 +11,9 @@ using SI_Exam_Monolithic_Flight_Application.Models.DTOs;
 
 namespace SI_Exam_Monolithic_Flight_Application.Utils
 {
-    public class XmlUtils
+    public class XmlUtils<T>
     {
-        public static string SerializeToString<T>(T value)
+        public static string SerializeToString(T value)
         {
             using (StringWriter writer = new StringWriter(CultureInfo.InvariantCulture))
             {
@@ -22,6 +22,21 @@ namespace SI_Exam_Monolithic_Flight_Application.Utils
                 var res = writer.ToString();
                 return res;
             }
+        }
+
+        public static T DeserializeToType(string xml)
+        {
+
+            XmlSerializer serializer =
+                new XmlSerializer(typeof(T));
+            T result;
+            using (TextReader reader = new StringReader(xml))
+            {
+                result = (T) serializer.Deserialize(reader);
+            }
+
+            return result;
+
         }
     }
 }

@@ -10,8 +10,8 @@ namespace SI_Exam_Monolithic_Flight_Application.Utils
 {
     public class ExternalRequests
     {
-        private string EurekaUrl = "localhost:someport";
-        public string GetCars()
+        private static string EurekaUrl = "localhost:someport";
+        public static string GetCars()
         {
             HttpWebRequest webRequest =
                 (HttpWebRequest)WebRequest.Create($@"{EurekaUrl}/car-catalog");
@@ -28,5 +28,7 @@ namespace SI_Exam_Monolithic_Flight_Application.Utils
                 return responseFromServer;
             }
         }
+
+
     }
 }

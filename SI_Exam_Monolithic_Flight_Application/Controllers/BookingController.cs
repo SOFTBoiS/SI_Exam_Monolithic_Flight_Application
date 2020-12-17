@@ -43,6 +43,8 @@ namespace SI_Exam_Monolithic_Flight_Application.Controllers
         public IActionResult Cars()
         {
             // TODO: Fetch cars from car microservice
+            var carsXML = ExternalRequests.GetCars();
+            var cars = XmlUtils<List<CarModel>>.DeserializeToType(carsXML);
             List<CarModel> tempCars = new List<CarModel>()
             {
                 new CarModel("123435", "Ferrari", "", "2017", "100.000"),
@@ -62,7 +64,7 @@ namespace SI_Exam_Monolithic_Flight_Application.Controllers
                 //TODO: Book a car
                 var objTest = new CarBookingModel("etmongoidher", "adam", DateTime.Today, DateTime.Today, 10000);
 
-                var res = XmlUtils.SerializeToString(objTest);
+                var res = XmlUtils<CarBookingModel>.SerializeToString(objTest);
                 TempData["TestXML"] = res;
                 Debug.WriteLine(res);
 
