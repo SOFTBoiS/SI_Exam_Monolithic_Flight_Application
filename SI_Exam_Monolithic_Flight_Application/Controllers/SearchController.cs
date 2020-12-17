@@ -68,7 +68,7 @@ namespace SI_Exam_Monolithic_Flight_Application.Controllers
             {
                 var config = await SearchHistory.LoadConfig();
                 await SearchHistory.CreateTopicMaybe(topic, 1, 3, config);
-                SearchHistory.Produce(departureAirport,$"{arrivalAirport},{departureDate},{returnDate}", topic, config);
+                SearchHistory.Produce($"{departureAirport},{arrivalAirport},{departureDate},{returnDate}", topic, config);
                 //SearchHistory.PrintUsage();
 
             }

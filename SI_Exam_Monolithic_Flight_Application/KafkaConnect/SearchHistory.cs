@@ -58,11 +58,13 @@ namespace SI_Exam_Monolithic_Flight_Application.KafkaConnect
             }
         }
 
-        public static void Produce(string key, string message, string topic, ClientConfig config)
+        public static void Produce(string message, string topic, ClientConfig config)
         {
             using (var producer = new ProducerBuilder<string, string>(config).Build())
             {
+                var key = "123";
                 Console.WriteLine($"Producing record: {key} {message}");
+
 
                 producer.Produce(topic, new Message<string, string> { Key = key, Value = message },
                     (deliveryReport) =>
