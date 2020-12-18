@@ -34,7 +34,8 @@ namespace SI_Exam_Monolithic_Flight_Application.Controllers
         {
 
             // Make a booking in the database
-            facade.BookFlight(1, id, price, passengers);
+            var bookingId = facade.BookFlight(1, id, price, passengers);
+            HttpContext.Session.SetInt32("bookingId", bookingId);
 
             // Serialize Flight
             var flight = new FlightSearchModel(id, departureAirport, arrivalAirport, image, time, price, departureDate, returnDate);
@@ -62,8 +63,9 @@ namespace SI_Exam_Monolithic_Flight_Application.Controllers
         }
 
         [HttpPost]
-        public IActionResult Confirm(string carId, string brand, string year, string km, long carPrice, string image)
+        public IActionResult Additional(string carId, string brand, string year, string km, long carPrice, string image)
         {
+            var bookingId = HttpContext.Session.GetInt32("bookingId");
             if (!String.IsNullOrEmpty(carId))
             {
                 //TODO: Book a car
@@ -76,8 +78,32 @@ namespace SI_Exam_Monolithic_Flight_Application.Controllers
                 //var res = XmlUtils<CarBookingModel>.SerializeToString(bookedCar);
                 TempData["BookedCar"] = bookedCar;
             }
+            else
+            {
+                var camundaProcessId = ExternalRequests.CamundaBookFlight(bookingId, true, false);
+                HttpContext.Session.SetString("camundaProcessId", camundaProcessId);
+                Debug.WriteLine("===========");
+                Debug.WriteLine(camundaProcessId);
+                Debug.WriteLine("===========");
+            }
+            return View("Confirmation");
+        }
 
-            //Todo: Confirm booking and save it in DB
+        [HttpPost]
+        public IActionResult Confirm(string status)
+        {
+            var processId = HttpContext.Session.GetString("camundaProcessId");
+            TempData["OrderStatus"] = status;
+            if (status == "Confirmed")
+            {
+                ExternalRequests.CamundaConfirmORder(processId, true);
+
+            }
+            else
+            {
+                ExternalRequests.CamundaConfirmORder(processId, false);
+
+            }
             return View("Confirmation");
         }
 

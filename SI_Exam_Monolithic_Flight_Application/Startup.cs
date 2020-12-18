@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CamundaClient;
 using Microsoft.AspNetCore.Http;
 
 namespace SI_Exam_Monolithic_Flight_Application
@@ -58,6 +59,8 @@ namespace SI_Exam_Monolithic_Flight_Application
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+            CamundaEngineClient camunda = new CamundaEngineClient();            
+            camunda.Startup(); 
         }
     }
 }

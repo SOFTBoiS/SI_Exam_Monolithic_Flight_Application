@@ -72,14 +72,14 @@ namespace SI_Exam_Monolithic_Flight_Application.Models.Data
 
         }
 
-        public bool ReserveFlight(int userId, int flightId, long price, int passengers)
+        public int ReserveFlight(int userId, int flightId, long price, int passengers)
         {
             try
             {
                 using (SqlConnection conn = new SqlConnection(_connString))
                 {
                     var query = new SqlCommand(
-                        "INSERT INTO dbo.Booking (user_id, flight_id, price, passengers, status) VALUES (@userId, @flightId, @price, @passengers, @status)",
+                        "INSERT INTO dbo.Booking (user_id, flight_id, price, passengers, status) VALUES (@userId, @flightId, @price, @passengers, @status);SELECT CAST(SCOPE_IDENTITY() AS INT) AS LAST_IDENTITY",
                         conn);
                     query.Parameters.AddWithValue("@userId", userId);
                     query.Parameters.AddWithValue("@flightId", flightId);
@@ -87,10 +87,42 @@ namespace SI_Exam_Monolithic_Flight_Application.Models.Data
                     query.Parameters.AddWithValue("@passengers", passengers);
                     query.Parameters.AddWithValue("@status", FLIGHT_STATUS.RESERVED.ToString());
                     conn.Open();
-                    var result = query.ExecuteNonQuery();
+                    // Return the ID of the newly inserted booking
+                    var id = query.ExecuteScalar();
+                    Debug.WriteLine("=======================");
+                    Debug.WriteLine(id);
+                    Debug.WriteLine("=======================");
+                    return (int) id;
                 }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                throw new Exception("Something went wrong with the booking. Please try again.");
+            }
+        }
 
-                return true;
+        public int UpdateBookingStatus(long bookingId, FLIGHT_STATUS newStatus)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(_connString))
+                {
+                    var query = new SqlCommand(
+                        "Update dbo.Booking SET status = @newStatus WHERE id = @bookingId;",
+                        conn);
+                    query.Parameters.AddWithValue("@newStatus", newStatus.ToString());
+                    query.Parameters.AddWithValue("@bookingId", bookingId);
+                    conn.Open();
+                    // Return the ID of the newly inserted booking
+                    var status = query.ExecuteNonQuery();
+                    if (status != 1)
+                    {
+                        throw new Exception("Tried to cancel a non-existing booking.");   
+                    }
+
+                    return status;
+                }
             }
             catch (Exception e)
             {

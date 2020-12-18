@@ -9,6 +9,7 @@
     var bookedCar = (CarModel)TempData["BookedCar"];
     var bookedFlight = HttpContextAccessor.HttpContext.Session.GetString("BookedFlight");
     var deserializedFlight = XmlUtils<FlightSearchModel>.DeserializeToType(bookedFlight);
+    var orderStatus = TempData["OrderStatus"];
 }
 
 <div>
@@ -25,7 +26,21 @@
         <span>@bookedCar.startDate - @bookedCar.endDate</span>
         <span>@bookedCar.PriceCalculated kr.</span>
     }
-    <button>Confirm</button>
-    <button>Cancel</button>
+    @if (orderStatus == null)
+    {
+
+        <form action="/Booking/Confirm" method="POST">
+            <input type="hidden" name="status" value="Confirmed"/>
+            <button>Confirm</button>
+        </form>
+        <form action="/Booking/Confirm" method="POST">
+            <input type="hidden" name="status" value="Cancelled" />
+            <button>Cancel</button>
+        </form>
+    }
+    else
+    {
+        <span>@orderStatus</span>
+    }
 
 </div>

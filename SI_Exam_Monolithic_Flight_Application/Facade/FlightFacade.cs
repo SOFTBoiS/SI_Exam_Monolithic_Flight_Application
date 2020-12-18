@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualBasic;
 using SI_Exam_Monolithic_Flight_Application.Models;
 using SI_Exam_Monolithic_Flight_Application.Models.Data;
+using SI_Exam_Monolithic_Flight_Application.Models.DTOs;
 
 namespace SI_Exam_Monolithic_Flight_Application.Facade
 {
@@ -24,11 +25,17 @@ namespace SI_Exam_Monolithic_Flight_Application.Facade
             return result;
         }
 
-        public bool BookFlight(int userId, int flightId, long price, int passengers)
+        public int BookFlight(int userId, int flightId, long price, int passengers)
         {
             
-            var succeeded = DAO.ReserveFlight(userId, flightId, price, passengers);
-            return succeeded;
+            var bookingId = DAO.ReserveFlight(userId, flightId, price, passengers);
+            return bookingId;
+        }
+
+        public int UpdateBookingStatus(long bookingId, FLIGHT_STATUS newStatus)
+        {
+            var affectedRows = DAO.UpdateBookingStatus(bookingId, newStatus);
+            return affectedRows;
         }
     }
 }
