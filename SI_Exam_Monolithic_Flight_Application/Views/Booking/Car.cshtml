@@ -15,8 +15,14 @@
         <span id="brand">@car.brand</span>
         <span id="year">@car.year</span>
         <span id="km">@car.km km</span>
+        <spand id="price">@car.PriceCalculated kr</spand>
         <form action="/Booking/Confirm" method="post">
             <input type="hidden" value="@car._id" name="carId"/>
+            <input type="hidden" value="@car.brand" name="brand"/>
+            <input type="hidden" value="@car.year" name="year"/>
+            <input type="hidden" value="@car.km" name="km"/>
+            <input type="hidden" value="@car.image" name="image"/>
+            <input type="hidden" value="@car.price" name="carPrice"/>
             <button>Book</button>
         </form>
 

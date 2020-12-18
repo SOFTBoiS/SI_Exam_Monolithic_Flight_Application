@@ -1,9 +1,31 @@
-﻿@*
+﻿@using SI_Exam_Monolithic_Flight_Application.Models.DTOs
+@using Microsoft.AspNetCore.Http
+@using SI_Exam_Monolithic_Flight_Application.Utils
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-    var test = TempData["TestXML"];
-
+    var bookedCar = (CarModel)TempData["BookedCar"];
+    var bookedFlight = HttpContextAccessor.HttpContext.Session.GetString("BookedFlight");
+    var deserializedFlight = XmlUtils<FlightSearchModel>.DeserializeToType(bookedFlight);
 }
 
-@test
+<div>
+    <h2>Flight information</h2>
+    <span>@deserializedFlight.departureAirport - @deserializedFlight.arrivalAirport</span>
+    <span>@deserializedFlight.departureDate - @deserializedFlight.returnDate</span>
+    <span>@deserializedFlight.PriceCalculated kr.</span>
+    @if (bookedCar != null)
+    {
+        <h2>Car information</h2>
+        <span>@bookedCar.brand</span>
+        <span>@bookedCar.year</span>
+        <span>@bookedCar.km km</span>
+        <span>@bookedCar.startDate - @bookedCar.endDate</span>
+        <span>@bookedCar.PriceCalculated kr.</span>
+    }
+    <button>Confirm</button>
+    <button>Cancel</button>
+
+</div>

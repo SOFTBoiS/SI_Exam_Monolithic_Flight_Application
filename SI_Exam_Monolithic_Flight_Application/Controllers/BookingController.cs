@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Microsoft.AspNetCore.Http;
 using SI_Exam_Monolithic_Flight_Application.Facade;
+using SI_Exam_Monolithic_Flight_Application.Models;
 using SI_Exam_Monolithic_Flight_Application.Models.Data;
 using SI_Exam_Monolithic_Flight_Application.Models.DTOs;
 using SI_Exam_Monolithic_Flight_Application.Utils;
@@ -29,13 +30,17 @@ namespace SI_Exam_Monolithic_Flight_Application.Controllers
         }
 
         [HttpPost]
-        public IActionResult Flight(int id, long price, int passengers)
+        public IActionResult Flight(int id, string departureAirport, string arrivalAirport, string departureDate, string returnDate, string time, long price, string image, int passengers)
         {
 
-            //Todo Create a flight booking
+            // Make a booking in the database
             facade.BookFlight(1, id, price, passengers);
 
-            HttpContext.Session.SetInt32("flightId", id);
+            // Serialize Flight
+            var flight = new FlightSearchModel(id, departureAirport, arrivalAirport, image, time, price, departureDate, returnDate);
+            var serializedFlight = XmlUtils<FlightSearchModel>.SerializeToString(flight);
+            HttpContext.Session.SetString("BookedFlight", serializedFlight);
+    
             return RedirectToAction("Index");
         }
 
@@ -43,33 +48,33 @@ namespace SI_Exam_Monolithic_Flight_Application.Controllers
         public IActionResult Cars()
         {
             // TODO: Fetch cars from car microservice
-            var carsXML = ExternalRequests.GetCars();
-            var cars = XmlUtils<List<CarModel>>.DeserializeToType(carsXML);
+            //var carsXML = ExternalRequests.GetCars();
+            //var cars = XmlUtils<List<CarModel>>.DeserializeToType(carsXML);
             List<CarModel> tempCars = new List<CarModel>()
             {
-                new CarModel("123435", "Ferrari", "", "2017", "100.000"),
-                new CarModel("123436", "Ferrari", "", "2020", "1.000"),
-                new CarModel("123437", "Ferrari", "", "2018", "5.000"),
-                new CarModel("123438", "Ferrari", "", "2017", "100.000"),
+                new CarModel("123435", "Ferrari", "", "2017", "100.000", 1_000_000),
+                new CarModel("123436", "Ferrari", "", "2020", "1.000", 5_000_000),
+                new CarModel("123437", "Ferrari", "", "2018", "5.000", 1_500_000),
+                new CarModel("123438", "Ferrari", "", "2017", "100.000", 2_750_000),
             };
             TempData["Cars"] = tempCars;
             return View("Car");
         }
 
         [HttpPost]
-        public IActionResult Confirm(string carId)
+        public IActionResult Confirm(string carId, string brand, string year, string km, long carPrice, string image)
         {
             if (!String.IsNullOrEmpty(carId))
             {
                 //TODO: Book a car
-                var objTest = new CarBookingModel("etmongoidher", "adam", DateTime.Today, DateTime.Today, 10000);
+                var startDate = HttpContext.Session.GetString("departureDate");
+                var endDate = HttpContext.Session.GetString("returnDate");
 
-                var res = XmlUtils<CarBookingModel>.SerializeToString(objTest);
-                TempData["TestXML"] = res;
-                Debug.WriteLine(res);
+                
+                var bookedCar = new CarModel(carId, brand, image, year, km, startDate, endDate, carPrice);
 
-
-
+                //var res = XmlUtils<CarBookingModel>.SerializeToString(bookedCar);
+                TempData["BookedCar"] = bookedCar;
             }
 
             //Todo: Confirm booking and save it in DB

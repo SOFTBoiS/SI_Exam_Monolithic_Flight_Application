@@ -55,7 +55,7 @@ namespace SI_Exam_Monolithic_Flight_Application.Models.Data
                             var image = result.GetString(result.GetOrdinal("image"));
                             var time = result.GetString(result.GetOrdinal("time"));
                             var price = result.GetInt64(result.GetOrdinal("price"));
-                            var flight = new FlightSearchModel(id, depAirport, arrAirport, image, time, price);
+                            var flight = new FlightSearchModel(id, depAirport, arrAirport, image, time, price, null, null);
                             flights.Add(flight);
                         }
                     }

@@ -1,14 +1,15 @@
 ﻿@using System.Collections.ObjectModel
 @using System.Diagnostics
 @using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
 @{
     ViewData["Title"] = "SearchResults";
     var flights = TempData["Flights"];
     var flightsObjects = (Collection<FlightSearchModel>)TempData["FlightObjects"];
-    var departureDate = TempData["departureDate"];
-    var returnDate = TempData["returnDate"];
-    var passengers = TempData["Passengers"];
+    var departureDate = HttpContextAccessor.HttpContext.Session.GetString("departureDate");
+    var returnDate = HttpContextAccessor.HttpContext.Session.GetString("returnDate");
+    var passengers = HttpContextAccessor.HttpContext.Session.GetInt32("Passengers");
 }
 
 
@@ -26,11 +27,19 @@
                         @flightsObjects[i].arrivalAirport - @flightsObjects[i].departureAirport
                     </span>
                     <span>@returnDate - @flightsObjects[i].time</span>
+                    <span name="price">@flightsObjects[i].PriceCalculated kr</span>
+
 
                 </div>
                 <form name="book" action="/Booking/Flight" method="POST">
                     <input type="hidden" value="@flightsObjects[i].id" name="id" />
+                    <input type="hidden" value="@flightsObjects[i].departureAirport" name="departureAirport" />
+                    <input type="hidden" value="@flightsObjects[i].arrivalAirport" name="arrivalAirport" />
+                    <input type="hidden" value="@departureDate" name="departureDate" />
+                    <input type="hidden" value="@returnDate" name="returnDate" />
+                    <input type="hidden" value="@flightsObjects[i].time" name="time" />
                     <input type="hidden" value="@flightsObjects[i].price" name="price" />
+                    <input type="hidden" value="@flightsObjects[i].image" name="image" />
                     <input type="hidden" value="@passengers" name="passengers" />
                     <button id="flight-@i">Book</button>
                 </form>

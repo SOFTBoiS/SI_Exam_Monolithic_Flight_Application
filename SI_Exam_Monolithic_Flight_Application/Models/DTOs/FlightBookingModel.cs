@@ -18,5 +18,6 @@ namespace SI_Exam_Monolithic_Flight_Application.Models.DTOs
         public int flight_id { get; set; }
         public int price { get; set; }
         public FLIGHT_STATUS status { get; set; }
+        public int PriceCalculated => price / 100;
     }
 }

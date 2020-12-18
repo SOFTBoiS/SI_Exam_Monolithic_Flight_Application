@@ -34,8 +34,8 @@
 
     
     <script>
-        var formData = {passengers: 1};
-      
+        var formData = { passengers: 1 };
+
 
         var form = document.getElementById("myForm");
         form.onchange = e => {
@@ -55,6 +55,8 @@
 
             window.location.href = `/search-flight/${formData.departureAirport}-${formData.arrivalAirport}/${formData.departureDate}/${formData.returnDate}/${formData.passengers}`;
         }
+
+    
 
 
     </script>

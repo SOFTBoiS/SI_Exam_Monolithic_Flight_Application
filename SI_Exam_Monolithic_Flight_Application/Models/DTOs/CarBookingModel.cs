@@ -15,6 +15,7 @@ namespace SI_Exam_Monolithic_Flight_Application.Models.DTOs
         public DateTime endDate { get; set;}
         public long price { get; set; }
 
+
         public CarBookingModel()
         {
         }

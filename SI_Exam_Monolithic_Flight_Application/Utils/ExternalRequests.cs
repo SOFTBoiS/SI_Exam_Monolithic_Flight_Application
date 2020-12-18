@@ -13,12 +13,32 @@ namespace SI_Exam_Monolithic_Flight_Application.Utils
         private static string EurekaUrl = "localhost:someport";
         public static string GetCars()
         {
+            var URL = $@"{EurekaUrl}/car-catalog";
+            var response = MakeRequest(URL, "GET", "application/xml");
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+
+                return ReadResponse(response);
+
+            }
+
+            throw new Exception(ReadResponse(response));
+
+
+        }
+
+        private static HttpWebResponse MakeRequest(string URL, string method, string contentType)
+        {
             HttpWebRequest webRequest =
-                (HttpWebRequest)WebRequest.Create($@"{EurekaUrl}/car-catalog");
-            webRequest.Method = "GET";
+                (HttpWebRequest)WebRequest.Create(URL);
+            webRequest.Method = method;
             webRequest.Accept = "application/xml";
             webRequest.ContentType = "application/xml";
-            var response = webRequest.GetResponse();
+            return (HttpWebResponse)webRequest.GetResponse();
+        }
+
+        private static string ReadResponse(HttpWebResponse response)
+        {
             using (Stream dataStream = response.GetResponseStream())
             {
                 // Open the stream using a StreamReader for easy access.
