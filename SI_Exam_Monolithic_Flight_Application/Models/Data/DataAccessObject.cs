@@ -13,6 +13,26 @@ namespace SI_Exam_Monolithic_Flight_Application.Models.Data
     {
         private string _sqlServer, _database, _trustedConn, _user, _password, _connString;
 
+        /// <summary>
+        /// The default constructor using environment variables to setup a database connection. Use this for production.
+        /// </summary>
+        public DataAccessObject()
+        {
+            _sqlServer = Environment.GetEnvironmentVariable("SI_EXAM_SERVER");
+            _database = Environment.GetEnvironmentVariable("SI_EXAM_DB_NAME");
+            _trustedConn = "true";
+            _connString = $"Data Source={_sqlServer};Initial Catalog={_database};"
+                          + $"Integrated Security={_trustedConn};";
+        }
+
+        /// <summary>
+        /// Use this constructor for testing purposes or if you need to connect to a database other than the default one.
+        /// </summary>
+        /// <param name="sqlServer"></param>
+        /// <param name="database"></param>
+        /// <param name="trustedConn"></param>
+        /// <param name="user"></param>
+        /// <param name="password"></param>
         public DataAccessObject(string sqlServer, string database, string trustedConn, string user = null, string password = null)
         {
             _sqlServer = sqlServer;

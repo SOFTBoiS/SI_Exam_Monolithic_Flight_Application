@@ -12,11 +12,47 @@ namespace SI_Exam_Monolithic_Flight_Application.Facade
 {
     public class FlightFacade
     {
-        private DataAccessObject DAO;
+        private static DataAccessObject DAO;
+        private static FlightFacade _instance;
 
-        public FlightFacade(DataAccessObject dao)
+
+        /// <summary>
+        /// Default constructor, use this for production.
+        /// </summary>
+        public FlightFacade()
         {
-            DAO = dao;
+
+            DAO = new DataAccessObject();
+        }
+
+        /// <summary>
+        /// Use this constructor for testing purposes or if you need to connect to a different database.
+        /// </summary>
+        /// <param name="dataAccessObject"></param>
+        public FlightFacade(DataAccessObject dataAccessObject)
+        {
+
+            _instance = new FlightFacade(dataAccessObject);
+
+        }
+
+        public static FlightFacade Singleton()
+        {
+            if (_instance == null)
+            {
+                _instance = new FlightFacade();
+            }
+
+            return _instance;
+        }
+        public static FlightFacade Singleton(DataAccessObject dataAccessObject)
+        {
+            if (_instance == null)
+            {
+                _instance = new FlightFacade(dataAccessObject);
+            }
+
+            return _instance;
         }
 
         public Collection<FlightSearchModel> SearchForFlight(string departureAirport, string arrivalAirport)
@@ -27,7 +63,7 @@ namespace SI_Exam_Monolithic_Flight_Application.Facade
 
         public int BookFlight(int userId, int flightId, long price, int passengers)
         {
-            
+
             var bookingId = DAO.ReserveFlight(userId, flightId, price, passengers);
             return bookingId;
         }
@@ -38,4 +74,6 @@ namespace SI_Exam_Monolithic_Flight_Application.Facade
             return affectedRows;
         }
     }
+
+
 }

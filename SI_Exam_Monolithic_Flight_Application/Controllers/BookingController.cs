@@ -18,12 +18,7 @@ namespace SI_Exam_Monolithic_Flight_Application.Controllers
 {
     public class BookingController : Controller
     {
-        private static string _sqlServer = Environment.GetEnvironmentVariable("SI_EXAM_SERVER");
-        private static string _database = Environment.GetEnvironmentVariable("SI_EXAM_DB_NAME");
-        private static string _trustedConn = "true";
-        private static DataAccessObject DAO = new DataAccessObject(_sqlServer, _database, _trustedConn);
 
-        FlightFacade facade = new FlightFacade(DAO);
         public IActionResult Index()
         {
             return View();
@@ -34,14 +29,14 @@ namespace SI_Exam_Monolithic_Flight_Application.Controllers
         {
 
             // Make a booking in the database
-            var bookingId = facade.BookFlight(1, id, price, passengers);
+            var bookingId = FlightFacade.Singleton().BookFlight(1, id, price, passengers);
             HttpContext.Session.SetInt32("bookingId", bookingId);
 
             // Serialize Flight
             var flight = new FlightSearchModel(id, departureAirport, arrivalAirport, image, time, price, departureDate, returnDate);
             var serializedFlight = XmlUtils<FlightSearchModel>.SerializeToString(flight);
             HttpContext.Session.SetString("BookedFlight", serializedFlight);
-    
+
             return RedirectToAction("Index");
         }
 
@@ -72,7 +67,7 @@ namespace SI_Exam_Monolithic_Flight_Application.Controllers
                 var startDate = HttpContext.Session.GetString("departureDate");
                 var endDate = HttpContext.Session.GetString("returnDate");
 
-                
+
                 var bookedCar = new CarModel(carId, brand, image, year, km, startDate, endDate, carPrice);
 
                 //var res = XmlUtils<CarBookingModel>.SerializeToString(bookedCar);
@@ -82,9 +77,7 @@ namespace SI_Exam_Monolithic_Flight_Application.Controllers
             {
                 var camundaProcessId = ExternalRequests.CamundaBookFlight(bookingId, true, false);
                 HttpContext.Session.SetString("camundaProcessId", camundaProcessId);
-                Debug.WriteLine("===========");
-                Debug.WriteLine(camundaProcessId);
-                Debug.WriteLine("===========");
+
             }
             return View("Confirmation");
         }
@@ -94,16 +87,10 @@ namespace SI_Exam_Monolithic_Flight_Application.Controllers
         {
             var processId = HttpContext.Session.GetString("camundaProcessId");
             TempData["OrderStatus"] = status;
-            if (status == "Confirmed")
-            {
-                ExternalRequests.CamundaConfirmORder(processId, true);
 
-            }
-            else
-            {
-                ExternalRequests.CamundaConfirmORder(processId, false);
+            var orderConfirmed = status == "Confirmed";
+            ExternalRequests.CamundaConfirmORder(processId, orderConfirmed);
 
-            }
             return View("Confirmation");
         }
 

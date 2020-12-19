@@ -15,16 +15,12 @@ namespace SI_Exam_Monolithic_Flight_Application.Camunda
     [ExternalTaskVariableRequirements("bookedFlight", "bookedCar", "bookingId")]
     public class CancelFlight : IExternalTaskAdapter
     {
-        //TODO: Move this into another class. Is used in different places
-        private static string _sqlServer = Environment.GetEnvironmentVariable("SI_EXAM_SERVER");
-        private static string _database = Environment.GetEnvironmentVariable("SI_EXAM_DB_NAME");
-        private static string _trustedConn = "true";
-        private static DataAccessObject DAO = new DataAccessObject(_sqlServer, _database, _trustedConn);
-        FlightFacade facade = new FlightFacade(DAO);
+
+        FlightFacade facade = new FlightFacade();
         public void Execute(ExternalTask externalTask, ref Dictionary<string, object> resultVariables)
         {
             var bookingId = (long) externalTask.Variables["bookingId"].Value;
-            facade.UpdateBookingStatus(bookingId, FLIGHT_STATUS.CANCELLED);
+            FlightFacade.Singleton().UpdateBookingStatus(bookingId, FLIGHT_STATUS.CANCELLED);
         }
     }
 }

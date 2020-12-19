@@ -15,11 +15,8 @@ namespace SI_Exam_Monolithic_Flight_Application.Camunda
     public class OrderConfirmation : IExternalTaskAdapter
     {
         //TODO: Move this into another class. Is used in different places
-        private static string _sqlServer = Environment.GetEnvironmentVariable("SI_EXAM_SERVER");
-        private static string _database = Environment.GetEnvironmentVariable("SI_EXAM_DB_NAME");
-        private static string _trustedConn = "true";
-        private static DataAccessObject DAO = new DataAccessObject(_sqlServer, _database, _trustedConn);
-        FlightFacade facade = new FlightFacade(DAO);
+
+
         //TODO: If confirmed change status of flight
         public void Execute(ExternalTask externalTask, ref Dictionary<string, object> resultVariables)
         {
@@ -30,7 +27,7 @@ namespace SI_Exam_Monolithic_Flight_Application.Camunda
                 if (isConfirmed)
                 {
                     var bookingId = (long) externalTask.Variables["bookingId"].Value;
-                    facade.UpdateBookingStatus(bookingId, FLIGHT_STATUS.PAID);
+                    FlightFacade.Singleton().UpdateBookingStatus(bookingId, FLIGHT_STATUS.PAID);
                 }
 
             }
