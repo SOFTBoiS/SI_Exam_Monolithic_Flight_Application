@@ -27,9 +27,9 @@ namespace SI_Exam_Monolithic_Flight_Application.Controllers
         [HttpPost]
         public IActionResult Flight(int id, string departureAirport, string arrivalAirport, string departureDate, string returnDate, string time, long price, string image, int passengers)
         {
-
+            var userId = (int) HttpContext.Session.GetInt32("userId");
             // Make a booking in the database
-            var bookingId = FlightFacade.Singleton().BookFlight(1, id, price, passengers);
+            var bookingId = FlightFacade.Singleton().BookFlight(userId, id, price, passengers);
             HttpContext.Session.SetInt32("bookingId", bookingId);
 
             // Serialize Flight
@@ -56,6 +56,7 @@ namespace SI_Exam_Monolithic_Flight_Application.Controllers
             TempData["Cars"] = tempCars;
             return View("Car");
         }
+
 
         [HttpPost]
         public IActionResult Additional(string carId, string brand, string year, string km, long carPrice, string image)

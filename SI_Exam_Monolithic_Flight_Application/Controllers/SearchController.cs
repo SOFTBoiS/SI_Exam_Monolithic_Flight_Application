@@ -34,12 +34,18 @@ namespace SI_Exam_Monolithic_Flight_Application.Controllers
             if (results.Count < 1)
             {
                 TempData["ErrorMessage"] = "No flights found";
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index");
             }
             // Save result data to retrieve it in the View
             TempData["FlightObjects"] = results;
             
             return View("SearchResults");
+        }
+
+
+        public IActionResult Index()
+        {
+            return View("search-flight");
         }
 
  

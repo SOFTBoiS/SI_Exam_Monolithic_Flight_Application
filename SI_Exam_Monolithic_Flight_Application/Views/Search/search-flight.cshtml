@@ -1,0 +1,58 @@
+﻿@using Microsoft.AspNetCore.Http
+@using System.Security.Cryptography.X509Certificates
+@model FlightSearchModel
+@{
+    ViewData["Title"] = "Home Page";
+    var errMsg = TempData["ErrorMessage"];
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <span style="color:red">@TempData["ErrorMessage"]</span>
+
+    @Html.ValidationMessage("Error")
+<form id="myForm">
+    <label for="passengers">Passengers:</label>
+
+    <select name="passengers" id="passengers">
+        @for (var i = 1; i < 10; i++)
+        {
+            <option>@i</option>
+        }
+    </select>
+    <input type="text" name="departureAirport" placeholder="Departure Air½½port" />
+    <input type="text" name="arrivalAirport" placeholder="Destination Airport" />
+    <input type="date" name="departureDate" />
+    <input type="date" name="returnDate" />
+
+    <button type="button" id="submitFlightSearch">Search</button>
+</form>
+
+    
+    <script>
+        var formData = { passengers: 1 };
+
+        var form = document.getElementById("myForm");
+        form.onchange = e => {
+            formData[e.target.name] = e.target.value;
+            console.log(formData);
+        }
+
+        form.submit = e => {
+            e.preventDefault();
+        }
+
+
+        var button = document.getElementById("submitFlightSearch");
+        button.onclick = e => {
+            e.preventDefault();
+            console.log(formData);
+
+            window.location.href = `/search-flight/${formData.departureAirport}-${formData.arrivalAirport}/${formData.departureDate}/${formData.returnDate}/${formData.passengers}`;
+        }
+
+
+    </script>
+</div>
+
+

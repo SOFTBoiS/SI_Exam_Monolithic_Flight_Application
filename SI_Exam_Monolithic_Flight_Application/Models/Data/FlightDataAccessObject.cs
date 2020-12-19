@@ -9,14 +9,14 @@ using SI_Exam_Monolithic_Flight_Application.Models.DTOs;
 
 namespace SI_Exam_Monolithic_Flight_Application.Models.Data
 {
-    public class DataAccessObject
+    public class FlightDataAccessObject
     {
         private string _sqlServer, _database, _trustedConn, _user, _password, _connString;
 
         /// <summary>
         /// The default constructor using environment variables to setup a database connection. Use this for production.
         /// </summary>
-        public DataAccessObject()
+        public FlightDataAccessObject()
         {
             _sqlServer = Environment.GetEnvironmentVariable("SI_EXAM_SERVER");
             _database = Environment.GetEnvironmentVariable("SI_EXAM_DB_NAME");
@@ -33,7 +33,7 @@ namespace SI_Exam_Monolithic_Flight_Application.Models.Data
         /// <param name="trustedConn"></param>
         /// <param name="user"></param>
         /// <param name="password"></param>
-        public DataAccessObject(string sqlServer, string database, string trustedConn, string user = null, string password = null)
+        public FlightDataAccessObject(string sqlServer, string database, string trustedConn, string user = null, string password = null)
         {
             _sqlServer = sqlServer;
             _database = database;

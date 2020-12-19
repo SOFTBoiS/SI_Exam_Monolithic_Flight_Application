@@ -16,7 +16,6 @@ namespace SI_Exam_Monolithic_Flight_Application.Camunda
     public class CancelFlight : IExternalTaskAdapter
     {
 
-        FlightFacade facade = new FlightFacade();
         public void Execute(ExternalTask externalTask, ref Dictionary<string, object> resultVariables)
         {
             var bookingId = (long) externalTask.Variables["bookingId"].Value;

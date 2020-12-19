@@ -12,27 +12,26 @@ namespace SI_Exam_Monolithic_Flight_Application.Facade
 {
     public class FlightFacade
     {
-        private static DataAccessObject DAO;
+        private static FlightDataAccessObject DAO;
         private static FlightFacade _instance;
 
 
         /// <summary>
         /// Default constructor, use this for production.
         /// </summary>
-        public FlightFacade()
+        private FlightFacade()
         {
-
-            DAO = new DataAccessObject();
+            DAO = new FlightDataAccessObject();
         }
 
         /// <summary>
         /// Use this constructor for testing purposes or if you need to connect to a different database.
         /// </summary>
-        /// <param name="dataAccessObject"></param>
-        public FlightFacade(DataAccessObject dataAccessObject)
+        /// <param name="flightDataAccessObject"></param>
+        private FlightFacade(FlightDataAccessObject flightDataAccessObject)
         {
 
-            _instance = new FlightFacade(dataAccessObject);
+            _instance = new FlightFacade(flightDataAccessObject);
 
         }
 
@@ -45,11 +44,11 @@ namespace SI_Exam_Monolithic_Flight_Application.Facade
 
             return _instance;
         }
-        public static FlightFacade Singleton(DataAccessObject dataAccessObject)
+        public static FlightFacade Singleton(FlightDataAccessObject flightDataAccessObject)
         {
             if (_instance == null)
             {
-                _instance = new FlightFacade(dataAccessObject);
+                _instance = new FlightFacade(flightDataAccessObject);
             }
 
             return _instance;

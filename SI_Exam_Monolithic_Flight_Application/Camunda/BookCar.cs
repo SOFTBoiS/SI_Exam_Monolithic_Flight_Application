@@ -7,7 +7,7 @@ using CamundaClient.Worker;
 namespace SI_Exam_Monolithic_Flight_Application.Camunda
 {
     [ExternalTaskTopic("book_car")]
-    [ExternalTaskVariableRequirements("bookedFlight", "bookedCar", "flightId")]
+    [ExternalTaskVariableRequirements("bookedFlight", "bookedCar", "bookingId", "carbookingId")]
     public class BookCar
     {
     }
