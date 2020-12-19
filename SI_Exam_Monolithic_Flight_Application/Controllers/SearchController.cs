@@ -19,9 +19,12 @@ namespace SI_Exam_Monolithic_Flight_Application.Controllers
     public class SearchController : Controller
     {
 
+        // Kafka Connect
+        private static ClientConfig config;
+        private string topic = "SI_exam.searchHistory";
 
         [Route("search-flight/{departureAirport}-{arrivalAirport}/{departureDate}/{returnDate}/{passengers}", Name="SearchFlight")]
-        public ActionResult SearchFlight(string departureAirport, string arrivalAirport, string departureDate, string returnDate, int passengers)
+        public async Task<ActionResult> SearchFlightAsync(string departureAirport, string arrivalAirport, string departureDate, string returnDate, int passengers)
         {
             //Contact DB
             var results = FlightFacade.Singleton().SearchForFlight(departureAirport, arrivalAirport);
@@ -41,19 +44,6 @@ namespace SI_Exam_Monolithic_Flight_Application.Controllers
             // Save result data to retrieve it in the View
             TempData["FlightObjects"] = results;
             
-            turn new FlightSearchModel[]
-            //{
-            //    new FlightSearchModel()
-            //    {
-            //        arrivalAirport = "CPH",
-            //        departureAirport = "LAX",
-            //        departureDate = new DateTime(2020, 12, 12),
-            //        returnDate = new DateTime(2020, 12, 14)
-            //    }
-            //};
-            TempData["Flights"] = response;
-
-        
             try
             {
                 var config = await SearchHistory.LoadConfig();
