@@ -55,17 +55,17 @@ namespace SI_Exam_Monolithic_Flight_Application
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
             app.UseSession();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGrpcService<Service>();
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapGrpcService<Service>();
+
                 
             });
             

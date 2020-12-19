@@ -128,7 +128,7 @@ namespace SI_Exam_Monolithic_Flight_Application.Models.Data
 
         }
 
-        public Collection<(string, string)> GetUsersBasedOnParameter(string parameter, string parameterValue)
+        public Collection<(string, string)> GetUsersBasedOnFlightParameter(string parameter, string parameterValue)
         {
             try
             {
@@ -138,7 +138,7 @@ namespace SI_Exam_Monolithic_Flight_Application.Models.Data
                 {
 
                     var query = new SqlCommand(
-                        $"SELECT email FROM [User] JOIN [Booking] ON {parameter} = @parameterValue",
+                        $"SELECT email, name FROM [User] WHERE id IN (SELECT DISTINCT user_id FROM [Booking] WHERE flight_id IN (SELECT id FROM [Flight] WHERE {parameter} = '{parameterValue}'));",
                         conn);
                     query.Parameters.AddWithValue("@parameterValue", parameterValue);
                     conn.Open();

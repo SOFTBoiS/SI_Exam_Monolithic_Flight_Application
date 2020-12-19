@@ -1,14 +1,13 @@
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 
-namespace SI_Exam_Monolithic_Flight_Application
+namespace SI_EmailService
 {
     public class Program
     {
@@ -17,6 +16,8 @@ namespace SI_Exam_Monolithic_Flight_Application
             CreateHostBuilder(args).Build().Run();
         }
 
+        // Additional configuration is required to successfully run gRPC on macOS.
+        // For instructions on how to configure Kestrel and gRPC clients on macOS, visit https://go.microsoft.com/fwlink/?linkid=2099682
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
@@ -24,10 +25,8 @@ namespace SI_Exam_Monolithic_Flight_Application
                     webBuilder.ConfigureKestrel(options =>
                     {
                         options.Limits.MinRequestBodyDataRate = null;
-                        options.ListenLocalhost(50051, listenOptions =>
-                        {
-                            listenOptions.Protocols = HttpProtocols.Http2;
-                        });
+                        options.ListenLocalhost(50051,
+                            listenOptions => { listenOptions.Protocols = HttpProtocols.Http2; });
                     }).UseStartup<Startup>();
                 });
     }

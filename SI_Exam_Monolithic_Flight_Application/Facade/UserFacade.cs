@@ -81,7 +81,7 @@ namespace SI_Exam_Monolithic_Flight_Application.Facade
 
         public Collection<(string, string)> GetUsersBasedOnParameter(string parameter, string parameterValue)
         {
-            var users = DAO.GetUsersBasedOnParameter(parameter, parameterValue);
+            var users = DAO.GetUsersBasedOnFlightParameter(parameter, parameterValue);
             return users;
         }
 

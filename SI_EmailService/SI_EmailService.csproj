@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Protos\emailservice.proto" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="Protos\emailservice.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos\greet.proto" GrpcServices="Server" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Grpc.AspNetCore" Version="2.34.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SI_Exam_Monolithic_Flight_Application\SI_Exam_Monolithic_Flight_Application.csproj" />
+  </ItemGroup>
+
+</Project>
