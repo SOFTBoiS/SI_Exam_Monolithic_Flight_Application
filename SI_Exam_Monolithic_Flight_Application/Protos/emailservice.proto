@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package emailservice;
+
+service EmailService{
+	rpc GetEmail(Query) returns (Email) {}
+
+	rpc GetEmails(Query) returns (ListOfEmails) {}
+}
+
+// The request message containing the user's name.
+message HelloRequest {
+	string name = 1;
+}
+
+// The response message containing the greetings
+message HelloReply {
+	string message = 1;
+}
+
+message Query {
+	string field = 1;
+	string filter = 2;
+}
+
+message ListOfEmails {
+	repeated Email emails = 1;
+}
+
+message Email {
+	string mail_address = 1;
+	string name = 2;
+}

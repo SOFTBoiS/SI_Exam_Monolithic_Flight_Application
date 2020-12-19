@@ -128,46 +128,42 @@ namespace SI_Exam_Monolithic_Flight_Application.Models.Data
 
         }
 
-        //public Collection<FlightSearchModel> GetUsersBasedOnParameter(string parameter, string parameterValue)
-        //{
-        //    try
-        //    {
+        public Collection<(string, string)> GetUsersBasedOnParameter(string parameter, string parameterValue)
+        {
+            try
+            {
 
-        //        var flights = new Collection<FlightSearchModel>();
-        //        using (SqlConnection conn = new SqlConnection(_connString))
-        //        {
+                var users = new Collection<(string, string)>();
+                using (SqlConnection conn = new SqlConnection(_connString))
+                {
 
-        //            var query = new SqlCommand(
-        //                $"SELECT email FROM [User] JOIN [Booking] ON {parameter }= @parameterValue",
-        //                conn);
-        //            query.Parameters.AddWithValue("@parameterValue", parameterValue);
-        //            conn.Open();
-        //            var result = query.ExecuteReader();
-        //            if (result.HasRows)
-        //            {
-        //                while (result.Read())
-        //                {
-        //                    var id = result.GetInt32(result.GetOrdinal("id"));
-        //                    var depAirport = result.GetString(result.GetOrdinal("departure_airport"));
-        //                    var arrAirport = result.GetString(result.GetOrdinal("arrival_airport"));
-        //                    var image = result.GetString(result.GetOrdinal("image"));
-        //                    var time = result.GetString(result.GetOrdinal("time"));
-        //                    var price = result.GetInt64(result.GetOrdinal("price"));
-        //                    var flight = new FlightSearchModel(id, depAirport, arrAirport, image, time, price, null, null);
-        //                    flights.Add(flight);
-        //                }
-        //            }
+                    var query = new SqlCommand(
+                        $"SELECT email FROM [User] JOIN [Booking] ON {parameter} = @parameterValue",
+                        conn);
+                    query.Parameters.AddWithValue("@parameterValue", parameterValue);
+                    conn.Open();
+                    var result = query.ExecuteReader();
+                    if (result.HasRows)
+                    {
+                        while (result.Read())
+                        {
+                            var name = result.GetString(result.GetOrdinal("name"));
+                            var email = result.GetString(result.GetOrdinal("email"));
 
-        //        }
+                            users.Add((email, name));
+                        }
+                    }
 
-        //        return flights;
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Debug.Write(e);
-        //        throw new Exception("Something went wrong fetching flights. Please try again.");
-        //    }
+                }
 
-        //}
+                return users;
+            }
+            catch (Exception e)
+            {
+                Debug.Write(e);
+                throw new Exception("Something went wrong fetching flights. Please try again.");
+            }
+
+        }
     }
 }

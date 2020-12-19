@@ -6,10 +6,16 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using CamundaClient;
+using Grpc.Core;
 using Microsoft.AspNetCore.Http;
+using SI_Exam_Monolithic_Flight_Application;
+using SI_Exam_Monolithic_Flight_Application.gRPC;
+using SI_Exam_Monolithic_Flight_Application.Models.DTOs;
+using SI_Exam_Monolithic_Flight_Application.Utils;
 
 namespace SI_Exam_Monolithic_Flight_Application
 {
@@ -27,6 +33,7 @@ namespace SI_Exam_Monolithic_Flight_Application
         {
             services.AddControllersWithViews();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            services.AddGrpc();
             services.AddSession(options =>
             {
             });
@@ -55,12 +62,26 @@ namespace SI_Exam_Monolithic_Flight_Application
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapGrpcService<Service>();
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                
             });
+            
+            //var xml = @"
+            //        <carId>etmongoidher</carId>
+            //        <username>adam</username>
+            //        <startDate>2020-12-17T00:00:00+01:00</startDate>
+            //    <endDate>2020-12-17T00:00:00+01:00</endDate>
+            //    <price>10000</price>
+            //    ";
+            //var car = XmlUtils<CarBookingModel>.DeserializeToType(xml);
+            //Debug.WriteLine(car.username);
+            //Debug.WriteLine(car.carId);
             CamundaEngineClient camunda = new CamundaEngineClient();            
             camunda.Startup(); 
         }
     }
 }
+

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.VisualBasic;
 using SI_Exam_Monolithic_Flight_Application.Models.Data;
 using SI_Exam_Monolithic_Flight_Application.Models.DTOs;
 
@@ -74,6 +76,13 @@ namespace SI_Exam_Monolithic_Flight_Application.Facade
         {
             var (id, usrname) = DAO.CreateUser(username, password, name, email);
             return (id, usrname);
+            
+        }
+
+        public Collection<(string, string)> GetUsersBasedOnParameter(string parameter, string parameterValue)
+        {
+            var users = DAO.GetUsersBasedOnParameter(parameter, parameterValue);
+            return users;
         }
 
     }
