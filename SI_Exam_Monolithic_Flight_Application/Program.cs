@@ -6,13 +6,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SI_Exam_Monolithic_Flight_Application.KafkaConnect;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 namespace SI_Exam_Monolithic_Flight_Application
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
         }
@@ -30,5 +31,7 @@ namespace SI_Exam_Monolithic_Flight_Application
                         });
                     }).UseStartup<Startup>();
                 });
+
+
     }
 }

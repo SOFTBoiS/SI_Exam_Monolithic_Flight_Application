@@ -11,6 +11,8 @@ using Newtonsoft.Json;
 using SI_Exam_Monolithic_Flight_Application.Facade;
 using SI_Exam_Monolithic_Flight_Application.Models;
 using SI_Exam_Monolithic_Flight_Application.Models.Data;
+using SI_Exam_Monolithic_Flight_Application.KafkaConnect;
+using Confluent.Kafka;
 
 namespace SI_Exam_Monolithic_Flight_Application.Controllers
 {
@@ -38,6 +40,31 @@ namespace SI_Exam_Monolithic_Flight_Application.Controllers
             }
             // Save result data to retrieve it in the View
             TempData["FlightObjects"] = results;
+            
+            turn new FlightSearchModel[]
+            //{
+            //    new FlightSearchModel()
+            //    {
+            //        arrivalAirport = "CPH",
+            //        departureAirport = "LAX",
+            //        departureDate = new DateTime(2020, 12, 12),
+            //        returnDate = new DateTime(2020, 12, 14)
+            //    }
+            //};
+            TempData["Flights"] = response;
+
+        
+            try
+            {
+                var config = await SearchHistory.LoadConfig();
+                await SearchHistory.CreateTopicMaybe(topic, 1, 3, config);
+                SearchHistory.Produce($"{departureAirport},{arrivalAirport},{departureDate},{returnDate}", topic, config);
+                //SearchHistory.PrintUsage();
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine("Did not work ", e.Message);
+            }
             
             return View("SearchResults");
         }
