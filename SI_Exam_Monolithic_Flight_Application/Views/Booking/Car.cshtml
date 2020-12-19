@@ -3,25 +3,24 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-    List<CarModel> tempCars = (List<CarModel>) TempData["Cars"];
+    CarList tempCars = (CarList) TempData["Cars"];
 }
 
 <h1>Select a car</h1>
 
 <div id="cars">
-    @foreach (var car in tempCars)
+    @foreach (var car in tempCars.carList)
     {
     <div id="car">
         <span id="brand">@car.brand</span>
         <span id="year">@car.year</span>
         <span id="km">@car.km km</span>
-        <spand id="price">@car.PriceCalculated kr</spand>
-        <form action="/Booking/Confirm" method="post">
-            <input type="hidden" value="@car._id" name="carId"/>
+        <spand id="price">@(car.price / 100) kr</spand>
+        <form action="/Booking/Additional" method="post">
+            <input type="hidden" value="@car.id" name="carId"/>
             <input type="hidden" value="@car.brand" name="brand"/>
             <input type="hidden" value="@car.year" name="year"/>
             <input type="hidden" value="@car.km" name="km"/>
-            <input type="hidden" value="@car.image" name="image"/>
             <input type="hidden" value="@car.price" name="carPrice"/>
             <button>Book</button>
         </form>

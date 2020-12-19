@@ -24,7 +24,7 @@
         <span>@bookedCar.year</span>
         <span>@bookedCar.km km</span>
         <span>@bookedCar.startDate - @bookedCar.endDate</span>
-        <span>@bookedCar.PriceCalculated kr.</span>
+        <span>@(bookedCar.price / 100) kr.</span>
     }
     @if (orderStatus == null)
     {

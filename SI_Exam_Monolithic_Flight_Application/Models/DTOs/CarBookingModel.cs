@@ -6,13 +6,13 @@ using System.Xml.Serialization;
 
 namespace SI_Exam_Monolithic_Flight_Application.Models.DTOs
 {
-    [XmlRoot(ElementName = "carBooking")]  
+    [XmlRoot(ElementName = "order")]  
     public class CarBookingModel
     {
         public string carId { get; set; }
         public string username { get; set;}
-        public DateTime startDate { get;set; }
-        public DateTime endDate { get; set;}
+        public string startDate { get;set; }
+        public string endDate { get; set;}
         public long price { get; set; }
 
 
@@ -20,7 +20,7 @@ namespace SI_Exam_Monolithic_Flight_Application.Models.DTOs
         {
         }
 
-        public CarBookingModel(string carId, string username, DateTime startDate, DateTime endDate, long price)
+        public CarBookingModel(string carId, string username, string startDate, string endDate, long price)
         {
             this.carId = carId;
             this.username = username;

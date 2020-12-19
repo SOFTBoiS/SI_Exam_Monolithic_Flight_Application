@@ -43,23 +43,17 @@ namespace SI_Exam_Monolithic_Flight_Application.Controllers
         [HttpGet]
         public IActionResult Cars()
         {
-            // TODO: Fetch cars from car microservice
-            //var carsXML = ExternalRequests.GetCars();
-            //var cars = XmlUtils<List<CarModel>>.DeserializeToType(carsXML);
-            List<CarModel> tempCars = new List<CarModel>()
-            {
-                new CarModel("123435", "Ferrari", "", "2017", "100.000", 1_000_000),
-                new CarModel("123436", "Ferrari", "", "2020", "1.000", 5_000_000),
-                new CarModel("123437", "Ferrari", "", "2018", "5.000", 1_500_000),
-                new CarModel("123438", "Ferrari", "", "2017", "100.000", 2_750_000),
-            };
-            TempData["Cars"] = tempCars;
+            var cars = ExternalRequests.GetCars();
+            var bookingId = HttpContext.Session.GetInt32("bookingId");
+            var camundaProcessId = ExternalRequests.CamundaBookFlight(bookingId, true, true);
+            HttpContext.Session.SetString("camundaProcessId", camundaProcessId);
+            TempData["Cars"] = cars;
             return View("Car");
         }
 
 
         [HttpPost]
-        public IActionResult Additional(string carId, string brand, string year, string km, long carPrice, string image)
+        public IActionResult Additional(string carId, string brand, string year, string km, long carPrice)
         {
             var bookingId = HttpContext.Session.GetInt32("bookingId");
             if (!String.IsNullOrEmpty(carId))
@@ -67,12 +61,18 @@ namespace SI_Exam_Monolithic_Flight_Application.Controllers
                 //TODO: Book a car
                 var startDate = HttpContext.Session.GetString("departureDate");
                 var endDate = HttpContext.Session.GetString("returnDate");
+                var username = HttpContext.Session.GetString("username");
 
+                var order = new CarOrder(username, carId, startDate, endDate, carPrice);
+                var serializedOrder = XmlUtils<CarOrder>.SerializeToString(order);
+                var response = ExternalRequests.BookCar(serializedOrder);
+                var linkToCar = response._links[0].href;
+                var processId = HttpContext.Session.GetString("camundaProcessId");
+                ExternalRequests.CamundaBookCar(processId, linkToCar, true);
+                // carBookingURL
 
-                var bookedCar = new CarModel(carId, brand, image, year, km, startDate, endDate, carPrice);
-
-                //var res = XmlUtils<CarBookingModel>.SerializeToString(bookedCar);
-                TempData["BookedCar"] = bookedCar;
+                Debug.WriteLine("Booked car: " + linkToCar);
+                TempData["BookedCar"] = new CarModel(int.Parse(carId), brand, year, km, carPrice, startDate, endDate);
             }
             else
             {
@@ -90,7 +90,7 @@ namespace SI_Exam_Monolithic_Flight_Application.Controllers
             TempData["OrderStatus"] = status;
 
             var orderConfirmed = status == "Confirmed";
-            ExternalRequests.CamundaConfirmORder(processId, orderConfirmed);
+            ExternalRequests.CamundaConfirmOrder(processId, orderConfirmed);
 
             return View("Confirmation");
         }

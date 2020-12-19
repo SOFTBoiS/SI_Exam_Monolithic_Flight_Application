@@ -12,7 +12,7 @@ using SI_Exam_Monolithic_Flight_Application.Models.DTOs;
 namespace SI_Exam_Monolithic_Flight_Application.Camunda
 {
     [ExternalTaskTopic("cancel_flight")]
-    [ExternalTaskVariableRequirements("bookedFlight", "bookedCar", "bookingId")]
+    [ExternalTaskVariableRequirements("bookedFlight", "bookingId")]
     public class CancelFlight : IExternalTaskAdapter
     {
 

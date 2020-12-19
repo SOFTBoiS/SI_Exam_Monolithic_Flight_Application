@@ -15,10 +15,12 @@ namespace SI_Exam_Monolithic_Flight_Application.Utils
     {
         public static string SerializeToString(T value)
         {
-            using (StringWriter writer = new StringWriter(CultureInfo.InvariantCulture))
+            using (var writer = new ExtentedStringWriter())
             {
-                XmlSerializer serializer = new XmlSerializer(value.GetType());
-                serializer.Serialize(writer, value);
+                XmlSerializer serializer = new XmlSerializer(value.GetType(), "");
+                XmlSerializerNamespaces emptyNS = new XmlSerializerNamespaces(new[] { new XmlQualifiedName("", "") });
+
+                serializer.Serialize(writer, value, emptyNS);
                 var res = writer.ToString();
                 return res;
             }

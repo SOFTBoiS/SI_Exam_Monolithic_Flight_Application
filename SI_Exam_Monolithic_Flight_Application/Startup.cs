@@ -10,10 +10,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using CamundaClient;
-using Grpc.Core;
 using Microsoft.AspNetCore.Http;
 using SI_Exam_Monolithic_Flight_Application;
-using SI_Exam_Monolithic_Flight_Application.gRPC;
 using SI_Exam_Monolithic_Flight_Application.Models.DTOs;
 using SI_Exam_Monolithic_Flight_Application.Utils;
 
@@ -33,7 +31,6 @@ namespace SI_Exam_Monolithic_Flight_Application
         {
             services.AddControllersWithViews();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
-            services.AddGrpc();
             services.AddSession(options =>
             {
             });
@@ -64,9 +61,6 @@ namespace SI_Exam_Monolithic_Flight_Application
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-                endpoints.MapGrpcService<Service>();
-
-                
             });
             
             //var xml = @"
